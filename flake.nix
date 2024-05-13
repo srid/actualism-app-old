@@ -9,7 +9,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     systems.url = "github:nix-systems/default";
 
-    rust-flake.url = "github:juspay/rust-flake";
+    rust-flake.url = "github:juspay/rust-flake/extraBuildArgs";
     rust-flake.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -85,6 +85,20 @@
               dioxus-cli
             ];
           };
+          crane.extraBuildArgs = {
+            buildPhaseCargoCommand = ''
+              pwd
+              export HOME=$(pwd)/home
+              mkdir -p $HOME
+              echo "Running 'dx build' ..."
+              dx build --release
+            '';
+            installPhaseCommand = ''
+              set -x
+              mkdir -p $out/bin
+              cp -r target/release/actualism-app $out/bin/
+            '';
+          };
           src = lib.cleanSourceWith {
             src = inputs.self; # The original, unfiltered source
             filter = path: type:
@@ -99,23 +113,7 @@
           };
         };
 
-        packages.default = self'.packages.actualism-app.overrideAttrs (oa: {
-          # Copy over assets for the desktop app to access
-          installPhase =
-            (oa.installPhase or "") + ''
-              cp -r ./assets/* $out/bin/
-            '';
-          postFixup =
-            (oa.postFixup or "") + ''
-              # HACK: The Linux desktop app is unable to locate the assets
-              # directory, but it does look into the current directory.
-              # So, `cd` to the directory containing assets (which is
-              # `bin/`, per the installPhase above) before launching the
-              # app.
-              wrapProgram $out/bin/${config.rust-project.cargoToml.package.name} \
-                --chdir $out/bin
-            '';
-        });
+        packages.default = self'.packages.actualism-app;
 
         devShells.default = pkgs.mkShell {
           name = "actualism-app";
