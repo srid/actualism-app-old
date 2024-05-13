@@ -2,7 +2,6 @@
 mod state;
 
 use dioxus::prelude::*;
-use dioxus_router::prelude::*;
 use state::AppState;
 
 fn main() {
