@@ -1,5 +1,4 @@
 {
-  description = "A starter template for Dioxus Desktop apps w/ Tailwind & Nix";
   nixConfig = {
     # https://garnix.io/docs/caching
     extra-substituters = "https://cache.garnix.io";
@@ -100,7 +99,7 @@
           };
         };
 
-        packages.default = self'.packages.dioxus-desktop-template.overrideAttrs (oa: {
+        packages.default = self'.packages.actualism-app.overrideAttrs (oa: {
           # Copy over assets for the desktop app to access
           installPhase =
             (oa.installPhase or "") + ''
@@ -119,10 +118,10 @@
         });
 
         devShells.default = pkgs.mkShell {
-          name = "dioxus-desktop-template";
+          name = "actualism-app";
           inputsFrom = [
             config.treefmt.build.devShell
-            self'.devShells.dioxus-desktop-template
+            self'.devShells.actualism-app
           ];
           packages = with pkgs; [
             just

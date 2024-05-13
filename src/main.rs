@@ -13,7 +13,7 @@ fn main() {
         .with_custom_head(r#"<link rel="stylesheet" href="tailwind.css">"#.to_string())
         .with_window(
             WindowBuilder::new()
-                .with_title("Dioxus Desktop Template")
+                .with_title("Actualism App")
                 .with_inner_size(LogicalSize::new(600.0, 500.0)),
         );
     LaunchBuilder::desktop().with_cfg(config).launch(App);
@@ -116,10 +116,10 @@ fn About() -> Element {
         div { class: "flex flex-col items-center",
             p {
                 "You are looking at a "
-                span { class: "font-bold", "Dioxus" }
+                span { class: "font-bold", "Actualism" }
                 " app (see source code "
                 ExternalLink {
-                    href: "https://github.com/srid/dioxus-desktop-template",
+                    href: "https://github.com/srid/actualism-app",
                     title: "Github repository",
                     "here"
                 }
@@ -146,7 +146,7 @@ fn Nav() -> Element {
     rsx! {
         nav { class: "flex flex-row justify-between w-full mb-8 px-4 py-2 bg-gray-800",
             div { class: "flex items-center",
-                h1 { class: "text-lg font-bold text-white", "Dioxus Desktop Template" }
+                h1 { class: "text-lg font-bold text-white", "Actualism App" }
             }
             div { class: "flex items-center",
                 NavLink { route: Route::Home {}, "Home" }
