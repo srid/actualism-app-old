@@ -16,3 +16,6 @@ bundle $CI="true":
     # HACK (change PWD): Until https://github.com/DioxusLabs/dioxus/issues/1283
     cd assets && dx bundle 
     nix run nixpkgs#lsd -- --tree ./dist/bundle/macos/actualism-app.app
+
+tw:
+    tailwindcss -i ./css/input.css -o ./assets/tailwind.css --watch

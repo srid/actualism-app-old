@@ -125,6 +125,7 @@
           ];
           packages = with pkgs; [
             just
+            pkgs.tailwindcss
           ];
           shellHook = ''
             echo
