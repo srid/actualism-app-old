@@ -14,7 +14,7 @@ fn main() {
 fn App() -> Element {
     use_context_provider(AppState::new);
 
-    rsx! { h1 { "Hello World" } }
+    rsx! { h1 { class: "text-3xl font-bold text-purple-500", "Hello World!" } }
 }
 
 #[component]
