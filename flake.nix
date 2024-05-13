@@ -94,9 +94,12 @@
               dx build --release
             '';
             installPhaseCommand = ''
-              set -x
               mkdir -p $out/bin
+              ls -l
               cp -r target/release/actualism-app $out/bin/
+              cp -r dist $out/
+              # TODO: Make this work (needs change to rust-flake, because nativeBuildInputs should be appended to)
+              # wrapProgram $out/bin/actualism-app --run "cd \"$(dirname \"$0\")/..\" "
             '';
           };
           src = lib.cleanSourceWith {
