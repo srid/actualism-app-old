@@ -9,7 +9,7 @@ fmt:
 
 # Run the project locally
 watch $RUST_BACKTRACE="1" $CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG="true":
-    dx serve
+    dx serve --platform fullstack
 
 # CI=true for https://github.com/tauri-apps/tauri/issues/3055#issuecomment-1624389208)
 bundle $CI="true":
