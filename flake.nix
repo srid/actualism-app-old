@@ -1,9 +1,4 @@
 {
-  nixConfig = {
-    # https://garnix.io/docs/caching
-    extra-substituters = "https://cache.garnix.io";
-    extra-trusted-public-keys = "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g=";
-  };
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -23,7 +18,6 @@
 
       imports = [
         inputs.rust-flake.flakeModules.default
-        inputs.rust-flake.flakeModules.nixpkgs
         inputs.treefmt-nix.flakeModule
         inputs.process-compose-flake.flakeModule
         inputs.cargo-doc-live.flakeModule
@@ -37,8 +31,8 @@
       };
 
       perSystem = { config, self', pkgs, lib, system, ... }: {
-        # Add your auto-formatters here.
-        # cf. https://numtide.github.io/treefmt/
+        imports = [ "${inputs.nixpkgs}/nixos/modules/misc/nixpkgs.nix" ];
+
         treefmt.config = {
           projectRootFile = "flake.nix";
           programs = {
@@ -47,21 +41,24 @@
           };
         };
 
-        nixpkgs.overlays = [
-          # Configure tailwind to enable all relevant plugins
-          (self: super: {
-            tailwindcss = super.tailwindcss.overrideAttrs
-              (oa: {
-                plugins = [
-                  pkgs.nodePackages."@tailwindcss/aspect-ratio"
-                  pkgs.nodePackages."@tailwindcss/forms"
-                  pkgs.nodePackages."@tailwindcss/language-server"
-                  pkgs.nodePackages."@tailwindcss/line-clamp"
-                  pkgs.nodePackages."@tailwindcss/typography"
-                ];
-              });
-          })
-        ];
+        nixpkgs = {
+          hostPlatform = system;
+          overlays = [
+            # Configure tailwind to enable all relevant plugins
+            (self: super: {
+              tailwindcss = super.tailwindcss.overrideAttrs
+                (oa: {
+                  plugins = [
+                    pkgs.nodePackages."@tailwindcss/aspect-ratio"
+                    pkgs.nodePackages."@tailwindcss/forms"
+                    pkgs.nodePackages."@tailwindcss/language-server"
+                    pkgs.nodePackages."@tailwindcss/line-clamp"
+                    pkgs.nodePackages."@tailwindcss/typography"
+                  ];
+                });
+            })
+          ];
+        };
 
         rust-project = {
           crane.args = {
