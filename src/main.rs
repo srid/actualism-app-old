@@ -8,7 +8,6 @@ fn main() {
     launch(App);
 }
 
-
 fn App() -> Element {
     use_context_provider(AppState::new);
 
@@ -24,7 +23,7 @@ fn Loader() -> Element {
     }
 }
 
-fn About() -> Element {
+fn _About() -> Element {
     rsx! {
         div { class: "flex flex-col items-center",
             p {
